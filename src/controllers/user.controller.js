@@ -1,4 +1,5 @@
 import User from "../models/Users.js";
+import jwt from "jsonwebtoken";
 
 export async function createUser(req, res) {
   try {
@@ -19,48 +20,47 @@ export async function createUser(req, res) {
         email,
       });
       res.status(201);
-      res.json({ message: "New User Stored" });
+      res.json({ message: "New User Created" });
     }
   } catch (error) {
     res.status(400);
-    res.json({ message: "Error creating New User Stored", error: error });
+    res.json({ message: "Error creating New User", error: error });
   }
   try {
     error;
   } catch (error) {}
 }
 
-/* 
-ejemplo de aut segun https://javascript.plainenglish.io/password-encryption-using-bcrypt-sequelize-and-nodejs-fb9198634ee7
-const authenticateUserWithemail = (user) => {
-    return new Promise((resolve, reject) => {
-     try {
-      usermodel.findOne({
-      where: {
-       user_email: user.userName // user email
-      }
-      }).then(async (response) => {
-       if (!response) {
-        resolve(false);
-       } else {
-         if (!response.dataValues.password || 
-          !await response.validPassword(user.password, 
-           response.dataValues.password)) {
-            resolve(false);
-         } else {
-          resolve(response.dataValues)
-         }
-        }
-       })
-      } catch (error) {
-      const response = {
-       status: 500,
-       data: {},
-      error: {
-       message: "user match failed"
-      }
-      };
-     reject(response);
-     }
-    })
-   } */
+export async function authenticateUserWithemail(req, res) {
+  try {
+    const user = req.body;
+    const userFinded = await User.findOne({ where: { email: user.email } });
+    if (!userFinded) {
+      res.status(500);
+      res.json({ message: "Invalid user" });
+    } else if (
+      !userFinded.password ||
+      !(await userFinded.validPassword(
+        user.password,
+        userFinded.dataValues.password
+      ))
+    ) {
+      res.status(401);
+      res.json({ message: "Invalid Password" });
+    } else {
+      let token = jwt.sign(
+        {
+          user,
+        },
+        "claveSuperSecreta",
+        { expiresIn: "2h" }
+      );
+
+      res.status(200);
+      res.json({ message: "Login Succesfull", user: user.email, token: token });
+    }
+  } catch (error) {
+    res.status(500);
+    res.json({ message: "Error LOGIN / user match failed", error: error });
+  }
+}

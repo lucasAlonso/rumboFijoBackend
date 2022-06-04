@@ -3,7 +3,7 @@ import Sequelize from "sequelize";
 import { sequelize } from "../database/database.js";
 
 const User = sequelize.define(
-  "user",
+  "users",
   {
     userId: {
       field: "user_id",
@@ -27,7 +27,6 @@ const User = sequelize.define(
       allowNull: false,
     },
   },
-  { timestamps: false },
   {
     hooks: {
       beforeCreate: async (user) => {
@@ -50,6 +49,7 @@ const User = sequelize.define(
     },
   }
 );
+
 User.prototype.validPassword = async (password, hash) => {
   return await bcrypt.compareSync(password, hash);
 };

@@ -3,12 +3,12 @@ import { sequelize } from "./database/database.js";
 
 //This forces tables creation in sql
 //import "./models/Projects.js";
-//import "./models/Users.js";
+import "./models/Users.js";
 //import "./models/Tasks.js";
 
 async function main() {
   try {
-    await sequelize.authenticate({ force: false });
+    await sequelize.authenticate({ force: true });
     console.log("DB conection up");
     await sequelize.sync();
     app.listen(4000);
