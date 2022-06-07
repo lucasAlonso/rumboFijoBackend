@@ -8,9 +8,10 @@ import {
   getProjects,
   updateProject,
 } from "../controllers/project.controller.js";
+import { validateToken } from "../middlewares/validations.js";
 
 // /apir/projects
-router.post("/", createProject);
+router.post("/", validateToken, createProject);
 router.get("/", getProjects);
 
 // /apir/projects/:projectID

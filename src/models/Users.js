@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import Sequelize from "sequelize";
 import { sequelize } from "../database/database.js";
+import Project from "./Projects.js";
 
 const User = sequelize.define(
   "users",
@@ -49,7 +50,9 @@ const User = sequelize.define(
     },
   }
 );
-
+Project.belongsTo(User, {
+  foreignKey: { name: "user_id", targetId: "id" },
+});
 User.prototype.validPassword = async (password, hash) => {
   return await bcrypt.compareSync(password, hash);
 };

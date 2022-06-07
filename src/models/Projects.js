@@ -8,6 +8,7 @@ const Project = sequelize.define(
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
     name: {
       type: Sequelize.TEXT,
@@ -18,11 +19,8 @@ const Project = sequelize.define(
     description: {
       type: Sequelize.TEXT,
     },
-    startdate: {
-      type: Sequelize.DATE,
-    },
   },
-  { timestamps: false }
+  { timestamps: true }
 );
 
 Project.hasMany(Task, {

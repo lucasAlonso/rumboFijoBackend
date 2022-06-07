@@ -2,9 +2,9 @@ import app from "./app.js";
 import { sequelize } from "./database/database.js";
 
 //This forces tables creation in sql
-//import "./models/Projects.js";
+import "./models/Projects.js";
 import "./models/Users.js";
-//import "./models/Tasks.js";
+import "./models/Tasks.js";
 
 async function main() {
   try {

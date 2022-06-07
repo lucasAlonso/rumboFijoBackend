@@ -11,17 +11,16 @@ export async function getProjects(req, res) {
   }
 }
 export async function createProject(req, res) {
-  const { name, priority, description, startdate } = req.body;
   try {
+    const { name, priority, description } = req.body;
     let newProject = await Project.create(
       {
         name,
         priority,
         description,
-        startdate,
       },
       {
-        fields: ["name", "priority", "description", "startdate"],
+        fields: ["name", "priority", "description"],
       }
     );
     if (newProject) {
@@ -37,8 +36,6 @@ export async function createProject(req, res) {
       data: {},
     });
   }
-
-  res.send("received");
 }
 
 export async function getOneProject(req, res) {
@@ -73,9 +70,9 @@ export async function deleteProject(req, res) {
 export async function updateProject(req, res) {
   try {
     const { id } = req.params;
-    const { name, priority, description, startdate } = req.body;
+    const { name, priority, description } = req.body;
     const projects = await Project.findAll({
-      attributes: ["id", "name", "priority", "description", "startdate"],
+      attributes: ["id", "name", "priority", "description"],
       where: { id },
     });
     if (projects.length > 0) {
@@ -84,7 +81,6 @@ export async function updateProject(req, res) {
           name,
           priority,
           description,
-          startdate,
         });
       });
     }
