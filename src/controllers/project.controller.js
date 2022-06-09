@@ -2,7 +2,10 @@ import Project from "../models/Projects.js";
 
 export async function getProjects(req, res) {
   try {
-    const projects = await Project.findAll();
+    const user_id = req.body.user.userId;
+    const projects = await Project.findAll({
+      where: { user_id },
+    });
     res.json({
       data: projects,
     });
@@ -13,14 +16,16 @@ export async function getProjects(req, res) {
 export async function createProject(req, res) {
   try {
     const { name, priority, description } = req.body;
+    const user_id = req.body.user.userId;
     let newProject = await Project.create(
       {
         name,
         priority,
         description,
+        user_id,
       },
       {
-        fields: ["name", "priority", "description"],
+        fields: ["name", "priority", "description", "user_id"],
       }
     );
     if (newProject) {
@@ -39,10 +44,11 @@ export async function createProject(req, res) {
 }
 
 export async function getOneProject(req, res) {
+  const user_id = req.body.user.userId;
   const { id } = req.params;
   try {
     const project = await Project.findOne({
-      where: { id },
+      where: { id, user_id },
     });
     res.json({
       project,
@@ -54,9 +60,11 @@ export async function getOneProject(req, res) {
 
 export async function deleteProject(req, res) {
   try {
+    const user_id = req.body.user.userId;
+
     const { id } = req.params;
     const deleteRowCount = await Project.destroy({
-      where: { id },
+      where: { id, user_id },
     });
     res.json({
       message: "Project Deleted succesfully",
@@ -70,10 +78,12 @@ export async function deleteProject(req, res) {
 export async function updateProject(req, res) {
   try {
     const { id } = req.params;
+    const user_id = req.body.user.userId;
+
     const { name, priority, description } = req.body;
     const projects = await Project.findAll({
       attributes: ["id", "name", "priority", "description"],
-      where: { id },
+      where: { id, user_id },
     });
     if (projects.length > 0) {
       projects.forEach(async (project) => {

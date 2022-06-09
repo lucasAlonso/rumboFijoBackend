@@ -50,7 +50,7 @@ export async function authenticateUserWithemail(req, res) {
     } else {
       let token = jwt.sign(
         {
-          user,
+          ...userFinded.dataValues,
         },
         "claveSuperSecreta",
         { expiresIn: "2h" }

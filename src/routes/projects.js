@@ -10,13 +10,13 @@ import {
 } from "../controllers/project.controller.js";
 import { validateToken } from "../middlewares/validations.js";
 
-// /apir/projects
+// /api/projects
 router.post("/", validateToken, createProject);
-router.get("/", getProjects);
+router.get("/", validateToken, getProjects);
 
-// /apir/projects/:projectID
-router.get("/:id", getOneProject);
-router.delete("/:id", deleteProject);
-router.put("/:id", updateProject);
+// /api/projects/:projectID
+router.get("/:id", validateToken, getOneProject);
+router.delete("/:id", validateToken, deleteProject);
+router.put("/:id", validateToken, updateProject);
 
 export default router;

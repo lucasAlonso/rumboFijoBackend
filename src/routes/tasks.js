@@ -5,15 +5,21 @@ import {
   deleteTask,
   getOneTask,
   getTaskByProject,
-  getTasks,
+  //getTasks,
   updateTask,
 } from "../controllers/task.controller.js";
+import { validateToken } from "../middlewares/validations.js";
 
-router.post("/", createTask);
-router.get("/", getTasks);
-router.delete("/:id", deleteTask);
-router.put("/:id", updateTask);
-router.get("/:id", getOneTask);
-router.get("/project/:projectid", getTaskByProject);
+router.post("/", validateToken, createTask);
+//router.get("/", validateToken, getTasks);
+router.delete("/:id", validateToken, deleteTask);
+router.put("/:id", validateToken, updateTask);
+router.get("/:id", validateToken, getOneTask);
+router.get(
+  "/project/:projectid",
+  validateToken,
+
+  getTaskByProject
+);
 
 export default router;
