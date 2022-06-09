@@ -28,25 +28,6 @@ export async function createTask(req, res) {
     console.log(error);
   }
 }
-/*
-DOSENT HAVE MUCH SENSE . . .
-export async function getTasks(req, res) {
-  try {
-    const user_id = req.body.user.userId;
-    const project = await Project.findByPk(projectid);
-
-    const tasks = await Task.findAll({
-      attributes: ["id", "projectid", "name", "done", "description"],
-      order: [["id", "DESC"]],
-      where: { user_id },
-    });
-    res.json({
-      tasks,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-} */
 
 export async function updateTask(req, res) {
   const { id } = req.params;
@@ -113,3 +94,23 @@ export async function getTaskByProject(req, res) {
     console.log(e);
   }
 }
+
+/*
+DOSENT HAVE MUCH SENSE . . .
+export async function getTasks(req, res) {
+  try {
+    const user_id = req.body.user.userId;
+    const project = await Project.findByPk(projectid);
+
+    const tasks = await Task.findAll({
+      attributes: ["id", "projectid", "name", "done", "description"],
+      order: [["id", "DESC"]],
+      where: { user_id },
+    });
+    res.json({
+      tasks,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+} */
